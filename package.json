@@ -1,0 +1,14 @@
+{
+  "name": "type-enrichment",
+  "version": "1.0.0",
+  "description": "Enrich TS primitives with constraints",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shlomi Borovitz",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^3.7.0-beta"
+  }
+}
