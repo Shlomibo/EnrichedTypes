@@ -4,7 +4,9 @@
   "description": "Enrich TS primitives with constraints",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p .",
+    "watch": "npm run build -- -w"
   },
   "author": "Shlomi Borovitz",
   "license": "ISC",
