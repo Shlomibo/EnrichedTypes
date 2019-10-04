@@ -40,13 +40,21 @@ export const types = {
 	},
 };
 export type Types = typeof types;
+export type IsType<TPredicate, TAlt = never> = TPredicate extends ((val: any) => val is (infer TType))
+	? TType
+	: TAlt;
+
+export interface PartialEnrichedType<T extends Primitive> {
+	isType: (val: any) => val is T;
+	assert: (val: any) => asserts val is T;
+}
 
 export function enrich<T extends Primitive>(
 	type: ((val: any) => val is T),
 	isValid: (val: T) => boolean
 ) {
 	const unique: unique symbol = Symbol('EnrichedType');
-	type EnrichedType = T & typeof unique;
+	type EnrichedType = T & ({ [ unique ]: true });
 
 	function isType(val: any): val is EnrichedType {
 		return type(val) && isValid(val as any);
@@ -56,16 +64,17 @@ export function enrich<T extends Primitive>(
 			throw new Error(`Value (${ val }) is invalid`);
 		}
 	}
+	function asType(val: T): IsType<typeof isType> {
+		assert(val);
+		return val;
+	}
 
 	return {
 		isType,
 		assert,
+		asType,
 	};
 }
 
-export type IsType<TPredicate, TAlt = never> = TPredicate extends ((val: any) => val is (infer TType))
-	? TType
-	: TAlt;
-
-export type EnrichedType<T extends ReturnType<typeof enrich>> =
+export type EnrichedType<T extends PartialEnrichedType<Primitive>> =
 	IsType<T[ 'isType' ]>;
